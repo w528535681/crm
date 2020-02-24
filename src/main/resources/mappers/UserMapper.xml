@@ -15,16 +15,28 @@
   <sql id="Base_Column_List" >
     id, user_name, user_pwd, true_name, email, phone, is_valid, create_date, update_date
   </sql>
+
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select
     <include refid="Base_Column_List" />
     from t_user
     where id = #{id,jdbcType=INTEGER}
   </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+
+
+    <select id="queryUserByUserName" resultType="com.shsxt.crm.vo.User">
+      select
+      <include refid="Base_Column_List"/>
+      from t_user
+      where is_valid = 1 and user_name = #{userName}
+    </select>
+
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from t_user
     where id = #{id,jdbcType=INTEGER}
   </delete>
+
   <insert id="insertSelective" parameterType="com.shsxt.crm.vo.User" >
     insert into t_user
     <trim prefix="(" suffix=")" suffixOverrides="," >
@@ -86,6 +98,8 @@
       </if>
     </trim>
   </insert>
+
+
   <update id="updateByPrimaryKeySelective" parameterType="com.shsxt.crm.vo.User" >
     update t_user
     <set >
@@ -116,4 +130,5 @@
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
+
 </mapper>
