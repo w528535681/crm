@@ -12,14 +12,13 @@ function openTab(text, url, iconCls){
     }
 }
 
-
-function logout() {
-    $.messager.confirm("来自crm","确定退出系统?",function (r) {
-        if(r){
+function logout(){
+    $.messager.confirm("来自crm","确定退出系统",function (r) {
+        if (r){
             $.removeCookie("userIdStr");
             $.removeCookie("userName");
             $.removeCookie("trueName");
-            $.messager.alert("来自crm","系统将在三秒后自动退出...","info");
+            $.messager.confirm("来自crm","系统将在三秒后自动退出...","info");
             setTimeout(function () {
                 window.location.href=ctx+"/index";
             },3000);
@@ -27,20 +26,19 @@ function logout() {
     })
 }
 
-
 function openPasswordModifyDialog() {
     $("#dlg").dialog("open").dialog("setTitle","密码修改");
 }
 
-function modifyPassword() {
+function  modifyPassword() {
     $("#fm").form("submit",{
         url:ctx+"/user/updatePassword",
-        onSubmit:function () {
+        onSubmit:function(){
             return $("#fm").form("validate");
         },
         success:function (data) {
-            data =JSON.parse(data);
-            if(data.code==200){
+            data = JSON.parse(data);
+            if (data.code==200){
                 $.messager.alert("来自crm","密码修改成功,系统将在5秒后执行退出操作...","info");
                 $.removeCookie("userIdStr");
                 $.removeCookie("userName");
@@ -48,7 +46,7 @@ function modifyPassword() {
                 setTimeout(function () {
                     window.location.href=ctx+"/index";
                 },5000)
-            }else{
+            }else {
                 $.messager.alert("来自crm",data.msg,"error");
             }
         }

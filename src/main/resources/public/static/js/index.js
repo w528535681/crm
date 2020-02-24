@@ -13,7 +13,7 @@ function login(){
     }
 
     $.ajax({
-        type:post,
+        type:"post",
         url:ctx+"/user/login",
         data:{
           userName:userName,
@@ -23,7 +23,14 @@ function login(){
         success:function (data) {
             console.log(data);
             if (data.code==200){
-                Window.location.href=ctx+"main";
+                var result = data.result;
+                /**
+                 * 写入cookie 到浏览器
+                 */
+                $.cookie("userIdStr",result.userIdStr);
+                $.cookie("userName",result.userName);
+                $.cookie("trueName",result.trueName);
+                window.location.href = ctx+"/main";
             }else {
                 alert(data.msg);
             }

@@ -2,25 +2,25 @@ package com.shsxt.crm.model;
 
 public class UserModel {
 
-    private Integer userId;
+    private String userIdStr;
     private String userName;
     private String trueName;
 
     public UserModel() {
     }
 
-    public UserModel(Integer userId, String userName, String trueName) {
-        this.userId = userId;
+    public UserModel(String userIdStr, String userName, String trueName) {
+        this.userIdStr = userIdStr;
         this.userName = userName;
         this.trueName = trueName;
     }
 
-    public Integer getUserId() {
-        return userId;
+    public String getUserIdStr() {
+        return userIdStr;
     }
 
-    public void setUserId(Integer userId) {
-        this.userId = userId;
+    public void setUserIdStr(String userIdStr) {
+        this.userIdStr = userIdStr;
     }
 
     public String getUserName() {
