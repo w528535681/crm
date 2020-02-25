@@ -1,3 +1,8 @@
+/**
+ * 格式化营销数据展示列表的分配状态
+ * @param value
+ * @returns {string}
+ */
 function formatterState(value) {
     /**
      *  0-未分配
@@ -12,6 +17,11 @@ function formatterState(value) {
     }
 }
 
+/**
+ *  格式化营销数据展示列表的开发状态
+ * @param value
+ * @returns {string}
+ */
 function formatterDevResult(value) {
 
     /**
@@ -33,6 +43,9 @@ function formatterDevResult(value) {
     }
 }
 
+/**
+ * 查询营销数据
+ */
 function searchSaleChance() {
 
     var customerName = $("#s_customerName").val();
@@ -42,5 +55,54 @@ function searchSaleChance() {
         customerName:customerName,
         createMan:createMan,
         state:state
+    })
+}
+
+/**
+ * 打开添加或者更新营销数据的对话框
+ */
+function openSaleChanceAddDialog() {
+    $("#dlg").dialog("open").dialog("setTitle","机会数据添加");
+}
+
+
+/**
+ * 关闭添加或者更新营销数据的对话框
+ */
+function closeSaleChanceDialog() {
+    $("#dlg").dialog("close");
+}
+
+/**
+ * 清空表单
+ */
+function clearFormData() {
+    $("#customerName").val("");
+    $("#chanceSource").val("");
+    $("#linkMan").val("");
+    $("#linkPhone").val("");
+    $("#cgjl").val("");
+    $("#overview").val("");
+    $("#description").val("");
+    $("#assignMan").combobox("setValue","");
+}
+
+/**
+ * 添加或者更新营销机会数据
+ */
+function saveOrUpdateSaleChance() {
+    $("#fm").form("submit",{
+        url:ctx+"/sale_chance/save",
+        onSubmit:function () {
+            return $("#fm").form("validate");
+        },
+        success:function (data) {
+            data = JSON.parse(data);
+            if (data.code==200){
+                closeSaleChanceDialog();
+                searchSaleChance();
+                clearFormData();
+            }
+        }
     })
 }
