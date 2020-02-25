@@ -1,5 +1,6 @@
 package com.shsxt.crm.controller;
 
+import com.github.pagehelper.PageException;
 import com.shsxt.base.BaseController;
 import com.shsxt.crm.service.UserService;
 import com.shsxt.crm.utils.LoginUserUtil;
@@ -23,6 +24,10 @@ public class IndexController extends BaseController {
     @GetMapping("index")
     public String index(){
 
+        /*if (1==1){
+
+            throw new PageException("参数异常！");
+        }*/
         return "index";
     }
 

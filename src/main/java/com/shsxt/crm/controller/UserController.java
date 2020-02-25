@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
@@ -28,43 +29,23 @@ public class UserController extends BaseController {
         return userService.selectByPrimaryKey(userId);
     }
 
-    @PostMapping("user/login")
+    @RequestMapping("user/login")
     @ResponseBody
     public ResultInfo login(String userName,String userPwd){
 
-        ResultInfo resultInfo = new ResultInfo();
+        UserModel userModel = userService.login(userName,userPwd);
 
-        try {
-            UserModel userModel = userService.login(userName,userPwd);
-            resultInfo.setResult(userModel);
-        } catch (ParamsException pe) {
-            pe.printStackTrace();
-            resultInfo.setCode(pe.getCode());
-            resultInfo.setMsg(pe.getMsg());
-        }catch (Exception e) {
-            e.printStackTrace();
-            resultInfo.setMsg("failed");
-            resultInfo.setCode(500);
-        }
-        return resultInfo;
+        return success("用户登录成功！",userModel);
+
     }
 
-    @PostMapping("user/updatePassword")
+    @RequestMapping("user/updatePassword")
     @ResponseBody
     public ResultInfo updatePassword(HttpServletRequest request,String oldPassword, String newPassword,String confirmPassword){
-        ResultInfo resultInfo = new ResultInfo();
-        try {
-            userService.updateUserPassword(LoginUserUtil.releaseUserIdFromCookie(request),oldPassword,newPassword,confirmPassword);
-        } catch (ParamsException pe) {
-            pe.printStackTrace();
-            resultInfo.setCode(pe.getCode());
-            resultInfo.setMsg(pe.getMsg());
-        }catch (Exception e) {
-            e.printStackTrace();
-            resultInfo.setMsg("failed");
-            resultInfo.setCode(500);
-        }
-        return resultInfo;
+
+        userService.updateUserPassword(LoginUserUtil.releaseUserIdFromCookie(request),oldPassword,newPassword,confirmPassword);
+
+        return success("密码更新成功！");
     }
 
 }
