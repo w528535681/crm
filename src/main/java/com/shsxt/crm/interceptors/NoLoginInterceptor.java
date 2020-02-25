@@ -1,8 +1,8 @@
 package com.shsxt.crm.interceptors;
 
+import com.shsxt.crm.exceptions.NoLoginException;
 import com.shsxt.crm.service.UserService;
 import com.shsxt.crm.utils.LoginUserUtil;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
 import javax.annotation.Resource;
@@ -22,13 +22,15 @@ public class NoLoginInterceptor extends HandlerInterceptorAdapter {
          */
         int userId = LoginUserUtil.releaseUserIdFromCookie(request);
 
-        if (userId==0||userService.selectByPrimaryKey(userId)==null){
+       /**
+        ** if (userId==0||userService.selectByPrimaryKey(userId)==null){
+        **  response.sendRedirect(request.getContextPath()+"/index");
+        *  return false;}
+        */
 
-            response.sendRedirect(request.getContextPath()+"/index");
-
-            return false;
-        }
-
+       if (userId==0||userService.selectByPrimaryKey(userId)==null){
+           throw new NoLoginException();
+       }
         return true;
     }
 }

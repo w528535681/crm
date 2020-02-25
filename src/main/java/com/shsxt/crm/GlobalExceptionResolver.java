@@ -1,8 +1,10 @@
 package com.shsxt.crm;
 
 import com.alibaba.fastjson.JSON;
+import com.shsxt.crm.exceptions.NoLoginException;
 import com.shsxt.crm.exceptions.ParamsException;
 import com.shsxt.crm.model.ResultInfo;
+import com.sun.org.apache.bcel.internal.generic.IF_ACMPEQ;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.method.HandlerMethod;
@@ -11,7 +13,6 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.PrintStream;
 import java.io.PrintWriter;
 
 /**
@@ -23,6 +24,20 @@ public class GlobalExceptionResolver implements HandlerExceptionResolver {
 
     @Override
     public ModelAndView resolveException(HttpServletRequest request, HttpServletResponse response, Object handler, Exception e) {
+
+        ModelAndView mv = new ModelAndView();
+        /**
+         *首先判断异常类型
+         *如果异常类型为未登录异常  执行视图转发
+         */
+        if (e instanceof NoLoginException){
+            NoLoginException ne = (NoLoginException) e;
+            mv.setViewName("no_login");
+            mv.addObject("msg",ne.getMsg());
+            mv.addObject("ctx",request.getContextPath());
+            return mv;
+        }
+
         /**方法返回值类型判断:
          *    如果方法级别存在@ResponseBody 方法响应内容为json  否则视图
          *    handler 参数类型为HandlerMethod
@@ -30,7 +45,7 @@ public class GlobalExceptionResolver implements HandlerExceptionResolver {
          *    视图:默认错误页面
          *    json:错误的json信息
          */
-        ModelAndView mv = new ModelAndView();
+
         mv.setViewName("error");
         mv.addObject("code",400);
         mv.addObject("msg","系统异常,请稍后再试...");
