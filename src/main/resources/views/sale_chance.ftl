@@ -2,7 +2,7 @@
 <html>
 <head>
     <#include "common.ftl" >
-    <script type="text/javascript" src="${ctx}/static/js/jquery.cookie.js"></script>
+    <script type="text/javascript" src="${ctx}/static/js/common.js"></script>
     <script type="text/javascript" src="${ctx}/static/js/sale.chance.js"></script>
 </head>
 <body style="margin: 1px">
@@ -66,7 +66,7 @@
                 <td><input type="text" id="linkMan" name="linkMan" class="easyui-validatebox" required="true"/> <font color="red">*</font></td>
                 <td>    </td>
                 <td>联系电话：</td>
-                <td><input type="text" id="linkPhone" name="linkPhone"  class="easyui-validatebox" required="true"/><font color="red">*</font></td>
+                <td><input type="text" id="linkPhone" name="linkPhone"  class="easyui-validatebox" required="true" validType="mobilePhone"/><font color="red">*</font></td>
             </tr>
             <tr>
                 <td>成功几率(%)：</td>
@@ -88,6 +88,7 @@
                 <td><input class="easyui-combobox" id="assignMan" name="assignMan" data-options="panelHeight:'auto',editable:false,valueField:'trueName',textField:'trueName',url:'${ctx}/user/queryCustomerManager.do'"/></td>
             </tr>
         </table>
+        <input name="id" type="hidden"/>
     </form>
 </div>
 <div id="dlg-buttons">

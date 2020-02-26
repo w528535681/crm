@@ -91,8 +91,14 @@ function clearFormData() {
  * 添加或者更新营销机会数据
  */
 function saveOrUpdateSaleChance() {
+    //默认访问后台的路径
+    var url = ctx+"/sale_chance/save";
+
+   if (!(isEmpty( $("input[name='id']").val()))){
+       url = ctx+"/sale_chance/update";
+   }
     $("#fm").form("submit",{
-        url:ctx+"/sale_chance/save",
+        url:url,
         onSubmit:function () {
             return $("#fm").form("validate");
         },
@@ -106,3 +112,68 @@ function saveOrUpdateSaleChance() {
         }
     })
 }
+
+function openSaleChanceModifyDialog() {
+
+    //获取更新的选中记录数
+    var rows = $("#dg").datagrid("getSelections");
+    if (rows.length==0){
+        $.messager.alert("来自crm","请选择待修改的机会数据!","error");
+        return;
+    }
+    if (rows.length>1){
+        $.messager.alert("来自crm","暂不支持批量修改!","error");
+        return;
+    }
+    //修改数据填充表格
+    $("#fm").form("load",rows[0]);
+    $("#dlg").dialog("open").dialog("setTitle","机会数据更新");
+}
+
+function deleteSaleChance() {
+
+    var rows = $("#dg").datagrid("getSelections");
+    if (rows.length==0){
+        $.messager.alert("来自crm","请选择要修改的机会数据","error");
+        return;
+    }
+
+    $.messager.confirm("来自crm","确定删除选中的记录?",function (r) {
+        if (r){
+            var ids = "ids=";
+            for (var i = 0;i<rows.length;i++){
+                if (i<rows.length-1){
+                    ids = ids+rows[i].id+"$ids=";
+                }else{
+                    ids = ids +rows[i].id;
+                }
+            }
+            $.ajax({
+                type:"post",
+                url:ctx+"/sale_chance/delete",
+                data:ids,
+                dataType:"json",
+                success:function (data) {
+                    if (data.code==200){
+                        searchSaleChance();
+                    }else {
+                     $.messager.alert("来自crm",data.msg,"error");
+                    }
+                }
+            })
+        }
+    })
+    
+}
+
+/**
+ * EasyUi前台表单校验手机号码的合法性
+ */
+$.extend($.fn.validatebox.defaults.rules, {
+    mobilePhone: {
+        validator: function (value, param) {
+            return /^1[3-8]+\d{9}$/.test(value);
+        },
+        message: '请输入正确的手机号码。'
+    }
+});

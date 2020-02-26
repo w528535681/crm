@@ -43,4 +43,18 @@ public class SaleChanceController extends BaseController {
         saleChanceService.saveSaleChances(saleChance);
         return success("机会数据添加成功！");
     }
+
+    @RequestMapping("update")
+    @ResponseBody
+    public ResultInfo updateSaleChance(SaleChance saleChance){
+        saleChanceService.updateSaleChance(saleChance);
+        return success("数据更新成功!");
+    }
+
+    @RequestMapping("delete")
+    @ResponseBody
+    public ResultInfo deleteSaleChancesByIds(Integer[] ids){
+        saleChanceService.deleteSaleChancesByIds(ids);
+        return success("数据删除成功!");
+    }
 }

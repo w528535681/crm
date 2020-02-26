@@ -85,4 +85,54 @@ public class SaleChanceService extends BaseService<SaleChance,Integer> {
         AssertUtil.isTrue(StringUtils.isBlank(linkPhone),"请输入联系电话！");
         AssertUtil.isTrue(!(PhoneUtil.isMobile(linkPhone)),"手机号格式不合法！");
     }
+
+    /**
+     * 更新机会数据记录
+     * @param saleChance
+     */
+    public void updateSaleChance(SaleChance saleChance){
+
+        /**
+         * 1.参数校验
+         *  id 记录存在校验
+         *  customerName:非空
+         *  linkMan:非空
+         *  linkPhone:非空 11位手机号
+         * 2. 设置相关参数值
+         *      updateDate:系统当前时间
+         *         原始记录 未分配 修改后改为已分配(由分配人决定)
+         *            state 0->1
+         *            assginTime 系统当前时间
+         *            devResult 0-->1
+         *         原始记录  已分配  修改后 为未分配
+         *            state  1-->0
+         *            assignTime  待定  null
+         *            devResult 1-->0
+         * 3.执行更新 判断结果
+         */
+
+        //获取要更新的记录id存在校验
+        AssertUtil.isTrue(saleChance.getId()==null,"待更新记录不存在!");
+        //从数据库查找要更新的临时记录
+        SaleChance temp = selectByPrimaryKey(saleChance.getId());
+        //判断记录是否存在
+        AssertUtil.isTrue(temp==null,"待更新记录不存在!");
+        checkParams(saleChance.getCustomerName(),saleChance.getLinkMan(),saleChance.getLinkPhone());
+        if (StringUtils.isBlank(temp.getAssignMan())&&StringUtils.isNotBlank(saleChance.getAssignMan())){
+            saleChance.setState(StateStatus.STATED.getType());
+            saleChance.setDevResult(DevResult.DEVING.getStstus());
+            saleChance.setAssignTime(new Date());
+        }else if(StringUtils.isNotBlank(temp.getAssignMan())&&StringUtils.isNotBlank(saleChance.getAssignMan())){
+            saleChance.setAssignMan("");
+            saleChance.setAssignTime(null);
+            saleChance.setDevResult(DevResult.UNDEV.getStstus());
+        }
+        saleChance.setUpdateDate(new Date());
+        AssertUtil.isTrue(updateByPrimaryKeySelective(saleChance)<1,"机会数据更新失败!");
+    }
+
+    public void deleteSaleChancesByIds(Integer[] ids){
+        AssertUtil.isTrue(null==ids||ids.length==0,"请选择待删除的机会数据!");
+        AssertUtil.isTrue(deleteBatch(ids)<ids.length,"机会数据删除失败!");
+    }
 }
