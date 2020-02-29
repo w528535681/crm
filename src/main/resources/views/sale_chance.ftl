@@ -6,7 +6,7 @@
     <script type="text/javascript" src="${ctx}/static/js/sale.chance.js"></script>
 </head>
 <body style="margin: 1px">
-<table id="dg" title="销售机会信息管理" class="easyui-datagrid"
+<table id="dg" class="easyui-datagrid"
     fitColumns="true" pagination="true" rownumbers="true"
     url="${ctx}/sale_chance/list" fit="true" toolbar="#tb">
  <thead>
