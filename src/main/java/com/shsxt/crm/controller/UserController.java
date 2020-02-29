@@ -13,6 +13,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.sound.midi.MidiSystem;
 import java.util.Map;
 
 @Controller
@@ -56,6 +57,9 @@ public class UserController extends BaseController {
     @RequestMapping("save")
     @ResponseBody
     public ResultInfo saveUser(User user){
+        user.getRoleIds().forEach(roleId ->{
+            System.out.println(roleId);
+        });
         userService.saveUser(user);
         return success("用户记录添加成功!");
     }
@@ -70,15 +74,15 @@ public class UserController extends BaseController {
     @ResponseBody
     public ResultInfo updateUser(User user){
         userService.updateUser(user);
-        return success("用户更新成功！");
+        return success("用户记录更新成功！");
     }
 
 
     @RequestMapping("delete")
     @ResponseBody
-    public ResultInfo deleteUser(Integer userId){
+    public ResultInfo deleteUser(@RequestParam(name = "id") Integer userId){
         userService.deleteUser(userId);
-        return success("用户删除成功！");
+        return success("用户记录删除成功！");
     }
 
 }

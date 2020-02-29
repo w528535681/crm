@@ -3,7 +3,8 @@
 <head>
     <#include "common.ftl" >
     <script type="text/javascript" src="${ctx}/static/js/common.js"></script>
-    <script type="text/javascript" src="${ctx}/static/js/user.js"></script>
+    <script type="text/javascript" src="${ctx}/static/js/base.js"></script>
+    <script type="text/javascript" src="${ctx}/static/js/user02.js"></script>
 </head>
 <body style="margin: 1px">
 <table id="dg" class="easyui-datagrid"
@@ -53,6 +54,15 @@
                 <td>    </td>
                 <td>联系电话：</td>
                 <td><input type="text" id="phone" name="phone"  class="easyui-validatebox" required="true" validType="mobilePhone"/><font color="red">*</font></td>
+            </tr>
+
+            <tr>
+                <td>角色：</td>
+                <td>
+                    <input id="roleIds" name="roleIds" class="easyui-combobox" name="dept"
+                           valueField="id" textField="text" url="${ctx}/role/queryAllRoles"
+                           panelHeight="auto" editable="false" multiple="true" style="width: 240px;"/>
+                </td>
             </tr>
         </table>
         <input name="id" type="hidden"/>
