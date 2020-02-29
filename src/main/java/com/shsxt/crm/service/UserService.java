@@ -3,9 +3,7 @@ package com.shsxt.crm.service;
 import com.shsxt.base.BaseService;
 import com.shsxt.crm.dao.UserMapper;
 import com.shsxt.crm.model.UserModel;
-import com.shsxt.crm.utils.AssertUtil;
-import com.shsxt.crm.utils.Md5Util;
-import com.shsxt.crm.utils.UserIDBase64;
+import com.shsxt.crm.utils.*;
 import com.shsxt.crm.vo.User;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +12,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.util.Date;
 
 
 @Service
@@ -118,5 +117,66 @@ public class UserService extends BaseService<User,Integer> {
         AssertUtil.isTrue(!(user.getUserPwd().equals(Md5Util.encode(oldPassword))),"原始密码不正确！");
         AssertUtil.isTrue(user.getUserPwd().equals(Md5Util.encode(newPassword)),"新密码不能与旧密码相同！");
 
+    }
+
+    public void saveUser(User user){
+        /**
+         * 1.参数校验
+         *     用户名  非空   唯一
+         *     email  非空  格式合法
+         *     手机号 非空  格式合法
+         * 2.设置默认参数
+         *      isValid 1
+         *      createDate   uddateDate
+         *      userPwd   123456->md5加密
+         * 3.执行添加  判断结果
+         */
+        checkParams(user.getUserName(),user.getEmail(),user.getPhone());
+        user.setIsValid(1);
+        user.setCreateDate(new Date());
+        user.setUserPwd(Md5Util.encode("123456"));
+        AssertUtil.isTrue(insertSelective(user)<1,"用户添加失败!");
+    }
+
+    /**
+     * 校验添加用户的参数
+     * @param id
+     * @param email
+     * @param phone
+     */
+    private void checkParams(String userName, String email, String phone) {
+        AssertUtil.isTrue(StringUtils.isBlank(userName),"用户名不能为空!");
+        AssertUtil.isTrue(StringUtils.isBlank(email),"请输入邮箱地址!");
+        AssertUtil.isTrue(!(EmailUtil.isEmail(email)),"请输入有效的邮箱地址!");
+        AssertUtil.isTrue(StringUtils.isBlank(phone),"请输入手机号码!");
+        AssertUtil.isTrue(!(PhoneUtil.isMobile(phone)),"请输入有效的手机号码!");
+    }
+
+    public void updateUser(User user){
+        /**
+         * 1.参数校验
+         *     id 非空  记录必须存在
+         *     用户名  非空   唯一
+         *     email  非空  格式合法
+         *     手机号 非空  格式合法
+         * 2.设置默认参数
+         *        uddateDate
+         * 3.执行更新  判断结果
+         */
+        AssertUtil.isTrue(user.getId()==null||null==selectByPrimaryKey(user.getId()),"待更新记录不存在!");
+        checkParams(user.getUserName(),user.getEmail(),user.getPhone());
+        User temp = userMapper.queryUserByUserName(user.getUserName());
+        if (null != temp && temp.getIsValid()==1){
+            AssertUtil.isTrue(!(user.getId().equals(temp.getId())),"该用户已存在!");
+        }
+        user.setUpdateDate(new Date());
+        AssertUtil.isTrue(updateByPrimaryKeySelective(user)<1,"用户更新失败!");
+    }
+
+    public void deleteUser(Integer userId){
+        User user = selectByPrimaryKey(userId);
+        AssertUtil.isTrue(user==null||userId==null,"待删除记录不存在!");
+        user.setIsValid(0);
+        AssertUtil.isTrue(updateByPrimaryKeySelective(user)<1,"用户记录删除失败!");
     }
 }

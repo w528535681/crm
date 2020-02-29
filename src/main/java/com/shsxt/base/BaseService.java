@@ -65,7 +65,7 @@ public abstract class BaseService<T,ID> {
      * @return
      */
     public List<T> selectByParams(BaseQuery baseQuery) throws DataAccessException{
-        return baseMapper.selectByParams(baseQuery);
+            return baseMapper.selectByParams(baseQuery);
     }
 
 

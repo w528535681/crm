@@ -24,7 +24,7 @@
   </select>
 
 
-    <select id="queryUserByUserName" resultType="com.shsxt.crm.vo.User">
+  <select id="queryUserByUserName" resultType="com.shsxt.crm.vo.User">
       select
       <include refid="Base_Column_List"/>
       from t_user
@@ -32,7 +32,7 @@
     </select>
 
 
-    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from t_user
     where id = #{id,jdbcType=INTEGER}
   </delete>
@@ -130,5 +130,22 @@
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
+
+  <select id="selectByParams" parameterType="com.shsxt.crm.query.UserQuery" resultType="com.shsxt.crm.vo.User">
+    select <include refid="Base_Column_List"></include>
+    from t_user
+    <where>
+      is_valid=1
+      <if test="null != userName and userName != '' ">
+        and user_name like concat('%',#{userName},'%')
+      </if>
+      <if test="null != phone and phone != '' ">
+         and phone=#{phone}
+      </if>
+      <if test="null != trueName and trueName != '' ">
+        and true_name=#{trueName}
+      </if>
+    </where>
+  </select>
 
 </mapper>
