@@ -22,11 +22,21 @@ public class User {
 
     private List<Integer> roleIds;
 
+    private String rids;
+
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
     private Date createDate;
 
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
     private Date updateDate;
+
+    public String getRids() {
+        return rids;
+    }
+
+    public void setRids(String rids) {
+        this.rids = rids;
+    }
 
     public List<Integer> getRoleIds() {
         return roleIds;

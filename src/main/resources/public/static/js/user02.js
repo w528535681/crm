@@ -22,6 +22,7 @@ function clearFormData() {
     $("#trueName").val("");
     $("#phone").val("");
     $("input[name='id']").val("");
+    $('#roleIds').combobox('clear');
 }
 
 
@@ -32,7 +33,20 @@ function saveOrUpdateUser(){
 }
 
 function openUserModifyDialog(){
-    openModifyDialog("dg","fm","dlg","用户更新");
+    var rows=$("#dg").datagrid("getSelections");
+    if(rows.length==0){
+        $.messager.alert("来自crm","请选择待修改的数据!","error");
+        return;
+    }
+    if(rows.length>1){
+        $.messager.alert("来自crm","暂不支持批量修改!","error");
+        return;
+    }
+
+    rows[0].roleIds=rows[0].rids.split(",");
+    $("#fm").form("load",rows[0]);
+
+    openDialog("dlg","用户更新");
 }
 
 function deleteUser(){

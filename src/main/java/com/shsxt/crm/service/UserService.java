@@ -2,9 +2,11 @@ package com.shsxt.crm.service;
 
 import com.shsxt.base.BaseService;
 import com.shsxt.crm.dao.UserMapper;
+import com.shsxt.crm.dao.UserRoleMapper;
 import com.shsxt.crm.model.UserModel;
 import com.shsxt.crm.utils.*;
 import com.shsxt.crm.vo.User;
+import com.shsxt.crm.vo.UserRole;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -12,7 +14,9 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 
 @Service
@@ -21,6 +25,9 @@ public class UserService extends BaseService<User,Integer> {
 
     @Autowired
     private UserMapper userMapper;
+
+    @Autowired
+    private UserRoleMapper userRoleMapper;
 
     /**
      * 1.参数校验
@@ -119,6 +126,7 @@ public class UserService extends BaseService<User,Integer> {
 
     }
 
+    @Transactional(propagation = Propagation.REQUIRED)
     public void saveUser(User user){
         /**
          * 1.参数校验
@@ -135,8 +143,49 @@ public class UserService extends BaseService<User,Integer> {
         user.setIsValid(1);
         user.setCreateDate(new Date());
         user.setUserPwd(Md5Util.encode("123456"));
-        AssertUtil.isTrue(insertSelective(user)<1,"用户添加失败!");
+        AssertUtil.isTrue(insertHasKey(user) == null,"用户添加失败!");
+        int useId = user.getId();
+
+        /**
+         * 用户角色分配
+         *    useId
+         *    roleIds
+         */
+        relaionUserRole(useId,user.getRoleIds());
     }
+
+
+    private void relaionUserRole(int useId, List<Integer> roleIds) {
+        /**
+         * 用户角色分配
+         *   原始角色不存在   添加新的角色记录
+         *   原始角色存在     添加新的角色记录
+         *   原始角色存在     清空所有角色
+         *   原始角色存在     移除部分角色
+         * 如何进行角色分配???
+         *  如果用户原始角色存在  首先清空原始所有角色
+         *  添加新的角色记录到用户角色表
+         */
+
+        int count = userRoleMapper.countRoleByUserId(useId);
+        if (count > 0){
+            AssertUtil.isTrue(userRoleMapper.deleteUserRoleByUserId(useId) != count,"用户角色分配失败!");
+        }
+
+        if (null != roleIds && roleIds.size() > 0){
+            List<UserRole> userRoles = new ArrayList<UserRole>();
+            roleIds.forEach(roleId ->{
+                UserRole userRole = new UserRole();
+                userRole.setUserId(useId);
+                userRole.setRoleId(roleId);
+                userRole.setCreateDate(new Date());
+                userRole.setUpdateDate(new Date());
+                userRoles.add(userRole);
+            });
+            AssertUtil.isTrue(userRoleMapper.insertBatch(userRoles)<userRoles.size(),"用户角色分配失败!");
+        }
+    }
+
 
     /**
      * 校验添加用户的参数
@@ -152,6 +201,8 @@ public class UserService extends BaseService<User,Integer> {
         AssertUtil.isTrue(!(PhoneUtil.isMobile(phone)),"请输入有效的手机号码!");
     }
 
+
+    @Transactional(propagation = Propagation.REQUIRED)
     public void updateUser(User user){
         /**
          * 1.参数校验
@@ -171,11 +222,18 @@ public class UserService extends BaseService<User,Integer> {
         }
         user.setUpdateDate(new Date());
         AssertUtil.isTrue(updateByPrimaryKeySelective(user)<1,"用户更新失败!");
+
+        relaionUserRole(user.getId(),user.getRoleIds());
     }
 
     public void deleteUser(Integer userId){
         User user = selectByPrimaryKey(userId);
         AssertUtil.isTrue(user==null||userId==null,"待删除记录不存在!");
+
+        int count = userRoleMapper.countRoleByUserId(userId);
+        if (count>0){
+            AssertUtil.isTrue(userRoleMapper.countRoleByUserId(userId)!=count,"用户角色分配失败!");
+        }
         user.setIsValid(0);
         AssertUtil.isTrue(updateByPrimaryKeySelective(user)<1,"用户记录删除失败!");
     }
