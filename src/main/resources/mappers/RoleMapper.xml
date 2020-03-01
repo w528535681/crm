@@ -23,6 +23,11 @@
         from t_role
         where is_valid=1
   </select>
+  <select id="queryRoleByRoleName" parameterType="string" resultType="com.shsxt.crm.vo.Role">
+    select <include refid="Base_Column_List"/>
+    from t_role
+    where is_valid = 1 and role_name = #{roleName}
+  </select>
   <insert id="insertSelective" parameterType="com.shsxt.crm.vo.Role" >
     insert into t_role
     <trim prefix="(" suffix=")" suffixOverrides="," >
@@ -87,4 +92,15 @@
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
+
+  <select id="selectByParams" parameterType="com.shsxt.crm.query.RoleQuery" resultType="com.shsxt.crm.vo.Role" >
+    select <include refid="Base_Column_List"/>
+    from t_role
+    <where>
+      is_valid=1
+      <if test="null !=roleName and roleName !=''">
+        and role_name like concat ('%',#{roleName},'%')
+      </if>
+    </where>
+  </select>
 </mapper>
