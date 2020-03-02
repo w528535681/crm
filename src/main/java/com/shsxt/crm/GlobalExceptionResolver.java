@@ -1,6 +1,7 @@
 package com.shsxt.crm;
 
 import com.alibaba.fastjson.JSON;
+import com.shsxt.crm.exceptions.AuthFailedException;
 import com.shsxt.crm.exceptions.NoLoginException;
 import com.shsxt.crm.exceptions.ParamsException;
 import com.shsxt.crm.model.ResultInfo;
@@ -62,6 +63,12 @@ public class GlobalExceptionResolver implements HandlerExceptionResolver {
                     mv.addObject("code",pe.getCode());
                     mv.addObject("msg",pe.getMsg());
                 }
+
+                if(e instanceof AuthFailedException){
+                    AuthFailedException pe = (AuthFailedException) e;
+                    mv.addObject("msg",pe.getMsg());
+                    mv.addObject("code",pe.getCode());
+                }
                 return mv;
             }else{
                 /**
@@ -74,6 +81,11 @@ public class GlobalExceptionResolver implements HandlerExceptionResolver {
                     ParamsException pe = (ParamsException)e;
                     resultInfo.setCode(pe.getCode());
                     resultInfo.setMsg(pe.getMsg());
+                }
+                if(e instanceof AuthFailedException){
+                    AuthFailedException pe = (AuthFailedException) e;
+                    resultInfo.setMsg(pe.getMsg());
+                    resultInfo.setCode(pe.getCode());
                 }
                 response.setCharacterEncoding("utf-8");
                 response.setContentType("application/json;charset=utf-8");
