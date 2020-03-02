@@ -65,10 +65,4 @@ function loadTreeData() {
             zTreeObj = $.fn.zTree.init($("#treeDemo"), setting, data);
         }
     });
-
-
-
-
-
-
 }

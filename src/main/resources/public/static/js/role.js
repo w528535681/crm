@@ -33,14 +33,26 @@ function deleteRole() {
 }
 
 
-
+var zTreeObj;
+var roleId;
 function openAddModuleDialog() {
+    var rows=$("#dg").datagrid("getSelections");
+    if(rows.length==0){
+        $.messager.alert("来自crm","请选择待授权的角色!","error");
+        return;
+    }
+    if(rows.length>1){
+        $.messager.alert("来自crm","暂不支持批量授权!","error");
+        return;
+    }
+
+    roleId=rows[0].id;
+
     $.ajax({
         type:"post",
         url:ctx+"/module/queryAllModules",
         dataType:"json",
         success:function (data) {
-            var zTreeObj;
             var setting = {
                 data: {
                     simpleData: {
@@ -49,10 +61,39 @@ function openAddModuleDialog() {
                 },
                 check: {
                     enable: true
+                },
+                callback: {
+                    onCheck: zTreeOnCheck
                 }
             };
             zTreeObj = $.fn.zTree.init($("#treeDemo"), setting, data);
             openDialog("module","授权");
+        }
+    });
+}
+
+function zTreeOnCheck(event,treeId,treeNode) {
+    /**
+     * 获取ztree中所有选中的节点
+     */
+    var nodes = zTreeObj.getCheckedNodes(true);
+    console.log(nodes);
+    var mids="mids=";
+    for (var i = 0;i<nodes.length;i++){
+        if (i<nodes.length-1){
+            mids = mids+nodes[i].id+"&mids=";
+        }else {
+            mids = mids+nodes[i].id;
+        }
+    }
+    console.log(mids);
+    $.ajax({
+        type:"post",
+        url:ctx+"/role/addGrant",
+        data:mids+"&roleId="+roleId,
+        dataType:"json",
+        success:function (data) {
+            console.log(data);
         }
     })
 }

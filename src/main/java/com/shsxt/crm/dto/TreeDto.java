@@ -4,6 +4,15 @@ public class TreeDto {
     private Integer id;
     private Integer pId;
     private String name;
+    private Boolean checked = false;
+
+    public Boolean getChecked() {
+        return checked;
+    }
+
+    public void setChecked(Boolean checked) {
+        this.checked = checked;
+    }
 
     public Integer getId() {
         return id;
