@@ -17,10 +17,10 @@ public class ModuleController extends BaseController {
 
     @Autowired
     private ModuleService moduleService;
-
     @RequestMapping("queryAllModules")
     @ResponseBody
-    public List<TreeDto> queryAllModules(){
-        return moduleService.queryAllModules();
+    public List<TreeDto> queryAllModules(Integer roleId){
+        return moduleService.queryAllModules02(roleId);
     }
+
 }

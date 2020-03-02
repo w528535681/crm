@@ -31,23 +31,31 @@
 </table>
 <div id="tb">
     <div>
-        <a href="javascript:openSaleChanceAddDialog()" class="easyui-linkbutton" iconCls="icon-add" plain="true">创建</a>
-        <a href="javascript:openSaleChanceModifyDialog()" class="easyui-linkbutton" iconCls="icon-edit" plain="true">修改</a>
-        <a href="javascript:deleteSaleChance()" class="easyui-linkbutton" iconCls="icon-remove" plain="true">删除</a>
+        <#if permissions?seq_contains("101002")>
+            <a href="javascript:openSaleChanceAddDialog()" class="easyui-linkbutton" iconCls="icon-add" plain="true">创建</a>
+        </#if>
+        <#if permissions?seq_contains("101004")>
+            <a href="javascript:openSaleChanceModifyDialog()" class="easyui-linkbutton" iconCls="icon-edit" plain="true">修改</a>
+        </#if>
+        <#if permissions?seq_contains("101003")>
+            <a href="javascript:deleteSaleChance()" class="easyui-linkbutton" iconCls="icon-remove" plain="true">删除</a>
+        </#if>
     </div>
-    <div>
-     客户名称：
-         <input type="text" id="s_customerName" size="20" onkeydown="if(event.keyCode==13) searchSaleChance()"/>
-     创建人：
-         <input type="text" id="s_createMan" size="20" onkeydown="if(event.keyCode==13) searchSaleChance()"/>
-     分配状态：
-         <select class="easyui-combobox" id="s_state" editable="false" panelHeight="auto" >
-            <option value="">请选择...</option>
-            <option value="0">未分配</option>
-            <option value="1">已分配</option>
-         </select>
-         <a href="javascript:searchSaleChance()" class="easyui-linkbutton" iconCls="icon-search" plain="true">搜索</a>
-     </div>
+    <#if permissions?seq_contains("101001")>
+        <div>
+         客户名称：
+             <input type="text" id="s_customerName" size="20" onkeydown="if(event.keyCode==13) searchSaleChance()"/>
+         创建人：
+             <input type="text" id="s_createMan" size="20" onkeydown="if(event.keyCode==13) searchSaleChance()"/>
+         分配状态：
+             <select class="easyui-combobox" id="s_state" editable="false" panelHeight="auto" >
+                <option value="">请选择...</option>
+                <option value="0">未分配</option>
+                <option value="1">已分配</option>
+             </select>
+             <a href="javascript:searchSaleChance()" class="easyui-linkbutton" iconCls="icon-search" plain="true">搜索</a>
+         </div>
+    </#if>
 </div>
 
 <div id="dlg" class="easyui-dialog" style="width:700px;height:400px;padding: 10px 20px"

@@ -52,6 +52,9 @@ function openAddModuleDialog() {
         type:"post",
         url:ctx+"/module/queryAllModules",
         dataType:"json",
+        data:{
+            roleId:roleId
+        },
         success:function (data) {
             var setting = {
                 data: {

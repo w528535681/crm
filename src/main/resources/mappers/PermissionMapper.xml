@@ -21,6 +21,18 @@
   <select id="countPermissionByRoleId" parameterType="int" resultType="java.lang.Integer">
     select count(1) from t_permission where role_id = #{roleId}
   </select>
+
+  <select id="queryRoleHasAllModuleIdsByRoleId" parameterType="int" resultType="java.lang.Integer">
+    select module_id from t_permission where role_id = #{roleId}
+  </select>
+
+
+  <select id="queryUserHasRolesHasPermissions" parameterType="int" resultType="java.lang.String">
+    select distinct  p.acl_value
+    from t_user_role tur left join t_permission p on tur.role_id = p.role_id
+    where tur.user_id = #{userId}
+  </select>
+
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from t_permission
     where id = #{id,jdbcType=INTEGER}
