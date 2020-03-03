@@ -118,7 +118,7 @@
                     </#if>
 
                     <#if permissions?seq_contains("6030")>
-                        <a href="javascript:openTab('菜单管理','module/index/0','icon-sjzdgl')" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-sjzdgl'" style="width: 150px;">菜单管理</a>
+                        <a href="javascript:openTab('菜单管理','module/index/1','icon-sjzdgl')" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-sjzdgl'" style="width: 150px;">菜单管理</a>
                     </#if>
                 </div>
             </#if>

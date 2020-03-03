@@ -155,4 +155,26 @@
         from t_module
         where is_valid = 1
   </select>
+
+  <select id="selectByParams" parameterType="com.shsxt.crm.query.ModuleQuery" resultType="com.shsxt.crm.vo.Module">
+    select <include refid="Base_Column_List"></include>
+    from t_module
+    <where>
+        is_valid = 1
+      <if test="null != grade">
+        and grade = #{grade}
+      </if>
+      <if test="null != moduleName and moduleName != '' ">
+        and module_name = #{moduleName}
+      </if>
+      <if test="null != code and code != ''">
+        and opt_value  = #{code}
+      </if>
+      <if test="null != pId">
+        and parent_id = #{pId}
+      </if>
+    </where>
+  </select>
+
+
 </mapper>
