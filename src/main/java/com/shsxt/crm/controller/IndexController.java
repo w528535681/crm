@@ -22,8 +22,6 @@ public class IndexController extends BaseController {
     @Resource
     private PermissionService permissionService;
 
-
-
     /**
      * 登录页
      * @return

@@ -19,3 +19,26 @@ function searchModules() {
     })
 }
 
+function openModuleAddDialog() {
+    $("#parentId").combobox("setValue",$("#pId").val());
+    openDialog("dlg","菜单添加");
+}
+
+function closeModuleDialog() {
+    closeDialog("dlg");
+}
+
+
+function  clearFormData(){
+    $("#moduleName").val("");
+    $("#moduleStyle").val("");
+    $("#optValue").val("");
+    $("#orders").val("");
+    $("input[name='id']").val("");
+}
+
+function saveOrUpdateModule() {
+    saveOrUpdateRecode(ctx+"/module/save","","dlg",searchModules,clearFormData);
+}
+
+

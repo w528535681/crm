@@ -176,5 +176,28 @@
     </where>
   </select>
 
+  <select id="queryModuleByGradeAndModuleName" resultType="com.shsxt.crm.vo.Module">
+    select <include refid="Base_Column_List"/>
+    from t_module
+    where is_valid = 1 and grade = #{grade} and module_name = #{moduleName}
+  </select>
+
+  <select id="queryModuleByGradeAndUrl" resultType="com.shsxt.crm.vo.Module">
+    select <include refid="Base_Column_List" />
+    from t_module
+    where is_valid = 1 and grade = #{grade} and url = #{url}
+  </select>
+
+  <select id="queryAllModulesByGrade"  parameterType="int" resultType="java.util.Map">
+    select id, module_name as moduleName
+    from t_module
+    where is_valid = 1 and grade = #{grade}
+  </select>
+
+  <select id="queryModuleByOptValue" parameterType="string" resultType="com.shsxt.crm.vo.Module">
+    select opt_value
+    from t_module
+    where opt_value = #{optValue}
+  </select>
 
 </mapper>
