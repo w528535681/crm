@@ -38,8 +38,7 @@
                      onkeydown="if(event.keyCode==13) searchModules()"/>
         操作码： <input type="text" id="s_code" size="20"
                     onkeydown="if(event.keyCode==13) searchModules()"/>
-        <a href="javascript:searchModules()" class="easyui-linkbutton" iconCls="icon-search"
-           plain="true">搜索</a>
+        <a href="javascript:searchModules()" class="easyui-linkbutton" iconCls="icon-search" plain="true">搜索</a>
     </div>
 </div>
 

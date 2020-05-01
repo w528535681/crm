@@ -67,4 +67,18 @@ public class ModuleController extends BaseController {
         return moduleService.queryAllModulesByGrade(grade);
     }
 
+    @RequestMapping("update")
+    @ResponseBody
+    public ResultInfo updateModule(Module module){
+        moduleService.updateModule(module);
+        return success("菜单更新成功");
+    }
+
+    @RequestMapping("delete")
+    @ResponseBody
+    public ResultInfo deleteModule(Integer id){
+        moduleService.deleteModuleById(id);
+        return success("菜单删除成功");
+    }
+
 }

@@ -30,6 +30,7 @@ function searchModules() {
 }
 
 function openModuleAddDialog() {
+    clearFormData();
     $("#parentId").combobox("setValue",$("#pId").val());
     openDialog("dlg","菜单添加");
 }
@@ -45,8 +46,17 @@ function  clearFormData(){
     $("#optValue").val("");
     $("#orders").val("");
     $("input[name='id']").val("");
+    $("#url").val();
 }
 
 function saveOrUpdateModule() {
-    saveOrUpdateRecode(ctx+"/module/save","","dlg",searchModules,clearFormData);
+    saveOrUpdateRecode(ctx+"/module/save",ctx+"/module/update","dlg",searchModules,clearFormData);
+}
+
+function openModuleModifyDialog() {
+    openModifyDialog("dg","fm","dlg","菜单更新");
+}
+
+function deleteModule() {
+    deleteRecode("dg",ctx+"/module/delete",searchModules);
 }

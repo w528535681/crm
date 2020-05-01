@@ -194,10 +194,43 @@
     where is_valid = 1 and grade = #{grade}
   </select>
 
-  <select id="queryModuleByOptValue" parameterType="string" resultType="com.shsxt.crm.vo.Module">
+<!--  <select id="queryModuleByOptValue" parameterType="string" resultType="com.shsxt.crm.vo.Module">
     select opt_value
     from t_module
     where opt_value = #{optValue}
+  </select>-->
+
+  <select id="queryModuleByOptValue"  parameterType="string" resultType="com.shsxt.crm.vo.Module">
+    select  <include refid="Base_Column_List"/>
+    from t_module
+    where is_valid=1 and opt_value=#{optValue}
   </select>
+
+
+    <select id="countSubModuleByParentId" parameterType="int" resultType="java.lang.Integer">
+      select count(1) from t_module where parent_id = #{mid} and is_valid = 1
+    </select>
+    <select id="queryUserHasRoleHasModuleDtos" resultType="com.shsxt.crm.dto.ModuleDto">
+        SELECT
+            DISTINCT
+            m.id,
+            m.module_name,
+            m.module_style,
+            m.url
+            FROM
+                t_user_role ur,
+                t_permission p,
+                t_module m
+            <where>
+              ur.role_id = p.role_id
+              AND p.module_id = m.id
+              AND m.is_valid = 1
+              AND ur.user_id = #{userId}
+              AND m.grade = #{grade}
+              <if test="null !=parentId">
+                and m.parent_id=#{parentId}
+              </if>
+            </where>
+    </select>
 
 </mapper>
