@@ -73,5 +73,81 @@
     </div>
 </div>
 
+<div id="dlg" class="easyui-dialog" style="width:700px;height:400px;padding: 10px 20px"
+     closed="true" buttons="#dlg-buttons">
+    <form id="fm" method="post">
+        <table cellspacing="8px">
+            <tr>
+                <td>客户名称：</td>
+                <td><input type="text" id="name" name="name" class="easyui-validatebox"
+                           required="true"/> <font color="red">*</font></td>
+                <td></td>
+                <td>区域</td>
+                <td><input type="text" id="area" name="area"/></td>
+            </tr>
+            <tr>
+                <td>客户经理：</td>
+                <td><input type="text" id="cusManager" name="cusManager" /> </td>
+                <td></td>
+                <td>客户级别：</td>
+                <td><input type="text" id="level" name="level" /></td>
+            </tr>
+            <tr>
+                <td>信用度：</td>
+                <td><input type="text" id="xyd" name="xyd"/></td>
+                <td></td>
+                <td>客户地址：</td>
+                <td><input type="text" id="address" name="address" /></td>
+            </tr>
+            <tr>
+                <td>邮编：</td>
+                <td><input type="text" id="postCode" name="postCode"/></td>
+                <td></td>
+                <td>联系电话：</td>
+                <td><input type="text" id="phone" name="phone"  class="easyui-validatebox"
+                           required="true"/> <font color="red">*</font> </td>
+            </tr>
+            <tr>
+                <td>传真：</td>
+                <td><input type="text" id="fax" name="fax"/></td>
+                <td></td>
+                <td>网站：</td>
+                <td><input type="text" id="webSite" name="webSite" /></td>
+            </tr>
+            <tr>
+                <td>法人：</td>
+                <td><input type="text" id="fr" name="fr"  class="easyui-validatebox"
+                           required="true"/> <font color="red">*</font></td>
+                <td></td>
+                <td>注册资金：</td>
+                <td><input type="text" id="zczj" name="zczj" /></td>
+            </tr>
+            <tr>
+                <td>年营业额：</td>
+                <td><input type="text" id="nyye" name="nyye"/></td>
+                <td></td>
+                <td>开户行：</td>
+                <td><input type="text" id="khyh" name="khyh" /></td>
+            </tr>
+            <tr>
+                <td>开户账号：</td>
+                <td><input type="text" id="khzh" name="khzh"/></td>
+                <td></td>
+                <td>国税：</td>
+                <td><input type="text" id="gsdjh" name="gsdjh" /></td>
+            </tr>
+            <tr>
+                <td>地税：</td>
+                <td><input type="text" id="dsdjh" name="dsdjh" /></td>
+            </tr>
+        </table>
+        <input name="id" type="hidden"/>
+    </form>
+</div>
+<div id="dlg-buttons">
+    <a href="javascript:saveOrUpdateCustomer()" class="easyui-linkbutton" iconCls="icon-ok">保存</a>
+    <a href="javascript:closeCustomerDialog()" class="easyui-linkbutton" iconCls="icon-cancel">关闭</a>
+</div>
+
 
 </body>
