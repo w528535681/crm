@@ -50,7 +50,7 @@
         <a href="javascript:deleteCustomer()" class="easyui-linkbutton" iconCls="icon-remove" plain="true">删除</a>
         <a href="javascript:deleteCustomer()" class="easyui-linkbutton" iconCls="icon-remove" plain="true">联系人管理</a>
         <a href="javascript:deleteCustomer()" class="easyui-linkbutton" iconCls="icon-remove" plain="true">交往记录</a>
-        <a href="javascript:deleteCustomer()" class="easyui-linkbutton" iconCls="icon-remove" plain="true">订单查看</a>
+        <a href="javascript:openShowOrderTab()" class="easyui-linkbutton" iconCls="icon-remove" plain="true">订单查看</a>
     </div>
     <div>
         客户名称： <input type="text" id="name" size="20" onkeydown="if(event.keyCode==13) searchCustomerChance()"/>
