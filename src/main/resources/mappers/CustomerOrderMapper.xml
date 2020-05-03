@@ -130,4 +130,18 @@
            </if>
         </where>
   </select>
+
+  <select id="queryOrderDetailByOrderId" parameterType="int" resultType="map">
+    select
+        o.order_no,
+        o.address,
+        sum(d.sum) as total,
+        case o.state
+            when 0 then "未支付"
+            when 1 then "已支付"
+            else "未知"
+            end as status
+        from t_customer_order o left join t_order_details d on o.id = d.order_id
+        where o.id=#{orderId} and o.is_valid = 1 and d.is_valid = 1
+  </select>
 </mapper>

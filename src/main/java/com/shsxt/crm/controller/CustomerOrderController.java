@@ -23,4 +23,11 @@ public class CustomerOrderController extends BaseController {
 
         return customerOrderService.queryByParamsForDataGrid(customerOrderQuery);
     }
+
+    @RequestMapping("queryOrderDetailByOrderId")
+    @ResponseBody
+    public Map<String,Object> queryOrderDetailByOrderId(Integer orderId){
+
+        return customerOrderService.queryOrderDetailByOrderId(orderId);
+    }
 }
