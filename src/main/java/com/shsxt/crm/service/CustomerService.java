@@ -1,9 +1,13 @@
 package com.shsxt.crm.service;
 
 import com.shsxt.base.BaseService;
+import com.shsxt.crm.dao.CustomerLossMapper;
 import com.shsxt.crm.dao.CustomerMapper;
+import com.shsxt.crm.dao.CustomerOrderMapper;
 import com.shsxt.crm.utils.AssertUtil;
 import com.shsxt.crm.vo.Customer;
+import com.shsxt.crm.vo.CustomerLoss;
+import com.shsxt.crm.vo.CustomerOrder;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -11,7 +15,9 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Service
 @SuppressWarnings("all")
@@ -19,6 +25,12 @@ public class CustomerService extends BaseService<Customer,Integer> {
 
     @Autowired
     private CustomerMapper customerMapper;
+
+    @Autowired
+    private CustomerOrderMapper customerOrderMapper;
+
+    @Autowired
+    private CustomerLossMapper customerLossMapper;
 
     @Transactional(propagation = Propagation.REQUIRED)
     public void saveCustomer(Customer customer){
@@ -91,6 +103,37 @@ public class CustomerService extends BaseService<Customer,Integer> {
         AssertUtil.isTrue(null == cid || null == customer,"待删除记录不存在!");
         customer.setIsValid(0);
         AssertUtil.isTrue(updateByPrimaryKeySelective(customer)<1,"客户删除失败!");
+    }
+
+    @Transactional(propagation = Propagation.REQUIRED)
+    public void updateCustomerState(){
+
+        List<Customer> lossCustomer = customerMapper.queryLossCustomers();
+        if (null != lossCustomer && lossCustomer.size()>0){
+
+            List<CustomerLoss> customerLosses = new ArrayList<CustomerLoss>();
+            List<Integer> lossCusIds = new ArrayList<Integer>();
+            lossCustomer.forEach(customer -> {
+                CustomerLoss customerLoss = new CustomerLoss();
+                // 设置最后下单时间
+                CustomerOrder lastCustomerOrder = customerOrderMapper.queryLastCustomerOrderByCusId(customer.getId());
+                if (null != lastCustomerOrder){
+                    customerLoss.setLastOrderTime(lastCustomerOrder.getOrderDate());
+                }
+                customerLoss.setCreateDate(new Date());
+                customerLoss.setUpdateDate(new Date());
+                customerLoss.setCusManager(customer.getCusManager());
+                customerLoss.setCusName(customer.getName());
+                customerLoss.setCusNo(customer.getKhno());
+                customerLoss.setIsValid(1);
+                //  设置客户流失状态为暂缓流失状态
+                customerLoss.setState(0);
+                customerLosses.add(customerLoss);
+                lossCusIds.add(customer.getId());
+            });
+            AssertUtil.isTrue(customerLossMapper.insertBatch(customerLosses)<customerLosses.size(),"客户流失数据流转失败!");
+            AssertUtil.isTrue(customerMapper.updateCustomerStateByIds(lossCusIds)<lossCusIds.size(),"客户流失数据流转失败!");
+        }
     }
 
 }

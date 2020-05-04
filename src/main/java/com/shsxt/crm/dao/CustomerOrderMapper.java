@@ -8,4 +8,6 @@ import java.util.Map;
 public interface CustomerOrderMapper extends BaseMapper<CustomerOrder,Integer> {
 
     public Map<String,Object> queryOrderDetailByOrderId(Integer orderId);
+
+    CustomerOrder  queryLastCustomerOrderByCusId(Integer id);
 }
