@@ -9,7 +9,7 @@
 
 <table id="dg"  class="easyui-datagrid"
        fitColumns="true" pagination="true" rownumbers="true"
-       url="${ctx}/customer_loss/list" fit="true" toolbar="#tb">
+       url="${ctx}/customer_loss/list" fit="true" toolbar="#tb" singleSelect="true">
     <thead>
     <tr>
         <th field="cb" checkbox="true" align="center"></th>
@@ -23,6 +23,7 @@
         <th field="lossReason" width="100" align="center">流失原因</th>
         <th field="createDate" width="100" align="center">创建时间</th>
         <th field="updateDate" width="100" align="center">更新时间</th>
+        <th field="op" width="100" align="center" formatter="formatterOp">操作</th>
     </tr>
     </thead>
 </table>
