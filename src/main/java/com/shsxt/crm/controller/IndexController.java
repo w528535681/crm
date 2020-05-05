@@ -50,7 +50,7 @@ public class IndexController extends BaseController {
         request.getSession().setAttribute("permissions",permissions);
         request.setAttribute("user",userService.selectByPrimaryKey(userId));
         request.getSession().setAttribute("modules",moduleService.queryUserHasRoleHasModuleDtos(userId));
-        return "main_2.0";
+        return "main";
     }
 
 }

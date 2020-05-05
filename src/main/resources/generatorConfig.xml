@@ -44,7 +44,7 @@
             <property name="enableSubPackages" value="true"/>
         </javaClientGenerator>
 
-        <table tableName="t_customer_reprieve" domainObjectName="CustomerRep"
+        <table tableName="t_customer_serve" domainObjectName="CustomerServe"
                enableCountByExample="false" enableUpdateByExample="false"
                enableDeleteByExample="false" enableSelectByExample="false"
                selectByExampleQueryId="false"></table>
