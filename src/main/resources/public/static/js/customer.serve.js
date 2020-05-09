@@ -26,7 +26,7 @@ function saveCustomerServe() {
     $('#fm').form('submit', {
         url:ctx+"/customer_serve/save",
         onSubmit: function(param){
-            param.trueName = $.cookie("trueName");
+            param.createPeople = $.cookie("trueName");
 
 
             console.log(param);

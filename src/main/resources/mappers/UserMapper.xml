@@ -147,4 +147,16 @@
     GROUP BY u.id
   </select>
 
+  <select id="queryAllCustomerManager" resultType="map">
+    select
+        u.id,
+        u.user_name AS name
+    from t_user u
+    left join t_user_role tur on tur.user_id = u.id
+    left join t_role r on r.id = tur.role_id
+    where
+        r.is_valid = 1
+    and r.role_name = "客户经理"
+  </select>
+
 </mapper>

@@ -194,4 +194,21 @@
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
+
+  <select id="selectByParams" parameterType="com.shsxt.crm.query.CustomerServeQuery" resultMap="BaseResultMap">
+    select <include refid="Base_Column_List"/>
+    from t_customer_serve
+    <where>
+      is_valid = 1
+      <if test="null != customer and customer != ''">
+        and customer like concat ('%',#{customer},'%')
+      </if>
+      <if test="null != state and state != ''">
+        and state = #{state}
+      </if>
+      <if test="null != type and type !=''">
+        and serve_type = #{type}
+      </if>
+    </where>
+  </select>
 </mapper>

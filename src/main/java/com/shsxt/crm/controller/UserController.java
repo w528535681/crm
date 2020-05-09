@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.sound.midi.MidiSystem;
+import java.util.List;
 import java.util.Map;
 
 @Controller
@@ -85,4 +86,9 @@ public class UserController extends BaseController {
         return success("用户记录删除成功！");
     }
 
+    @RequestMapping("queryAllCustomerManager")
+    @ResponseBody
+    public List<Map<String,Object>> queryAllCustomerManager(){
+        return userService.queryAllCustomerManager();
+    }
 }
