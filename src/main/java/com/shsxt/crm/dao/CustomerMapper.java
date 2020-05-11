@@ -16,4 +16,6 @@ public interface CustomerMapper extends BaseMapper<Customer,Integer> {
     int  updateCustomerStateByIds(List<Integer> lossCusIds);
 
     public List<Map<String,Object>> queryCustomerContributionByParams(CustomerQuery customerQuery);
+
+    public List<Map<String,Object>> countCustomerMake();
 }

@@ -379,4 +379,17 @@
     ORDER BY  total DESC
   </select>
 
+  <select id="countCustomerMake" resultType="map">
+        SELECT
+         level,
+        count(1) AS total
+        FROM
+            t_customer
+        WHERE
+            is_valid = 1
+        AND state = 0
+        GROUP BY
+            level
+  </select>
+
 </mapper>

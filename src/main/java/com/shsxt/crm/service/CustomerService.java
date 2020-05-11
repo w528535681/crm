@@ -144,8 +144,38 @@ public class CustomerService extends BaseService<Customer,Integer> {
         PageInfo<Map<String,Object>> pageInfo = new PageInfo<Map<String,Object>>(list);
         result.put("total",pageInfo.getTotal());
         result.put("rows",pageInfo.getList());
-
         return  result;
+    }
+
+    public Map<String,Object> countCustomerMake(){
+        Map<String,Object> result = new HashMap<String,Object>();
+        List<Map<String,Object>> list = customerMapper.countCustomerMake();
+        List<String> data1List = new ArrayList<String>();
+        List<Integer> data2List = new ArrayList<Integer>();
+        list.forEach(m->{
+            data1List.add(m.get("level").toString());
+            data2List.add(Integer.parseInt(m.get("total")+""));
+        });
+        result.put("data1",data1List);
+        result.put("data2",data2List);
+        return result;
+    }
+
+    public Map<String,Object> countCustomerMake02(){
+        Map<String,Object> result = new HashMap<String,Object>();
+        List<Map<String,Object>> list = customerMapper.countCustomerMake();
+        List<String> data1List = new ArrayList<String>();
+        List<Map<String,Object>> data2List = new ArrayList<Map<String, Object>>();
+        list.forEach(m->{
+            data1List.add(m.get("level").toString());
+            Map<String,Object> temp = new HashMap<String, Object>();
+            temp.put("name",m.get("level"));
+            temp.put("value",m.get("total"));
+            data2List.add(temp);
+        });
+        result.put("data1",data1List);
+        result.put("data2",data2List);
+        return result;
     }
 
 }

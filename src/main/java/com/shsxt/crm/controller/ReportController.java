@@ -15,6 +15,9 @@ public class ReportController extends BaseController {
         if(null !=type ){
             if(type ==0){
                 return "customer_contri";
+            }
+            else if(type==1){
+                return "customer_make";
             }else{
                 return "";
             }
