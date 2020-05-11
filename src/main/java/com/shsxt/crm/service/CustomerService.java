@@ -1,9 +1,12 @@
 package com.shsxt.crm.service;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.shsxt.base.BaseService;
 import com.shsxt.crm.dao.CustomerLossMapper;
 import com.shsxt.crm.dao.CustomerMapper;
 import com.shsxt.crm.dao.CustomerOrderMapper;
+import com.shsxt.crm.query.CustomerQuery;
 import com.shsxt.crm.utils.AssertUtil;
 import com.shsxt.crm.vo.Customer;
 import com.shsxt.crm.vo.CustomerLoss;
@@ -15,9 +18,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 @Service
 @SuppressWarnings("all")
@@ -134,6 +135,17 @@ public class CustomerService extends BaseService<Customer,Integer> {
             AssertUtil.isTrue(customerLossMapper.insertBatch(customerLosses)<customerLosses.size(),"客户流失数据流转失败!");
             AssertUtil.isTrue(customerMapper.updateCustomerStateByIds(lossCusIds)<lossCusIds.size(),"客户流失数据流转失败!");
         }
+    }
+
+    public Map<String,Object> queryCustomerContributionByParams(CustomerQuery customerQuery){
+        Map<String,Object> result = new HashMap<String,Object>();
+        PageHelper.startPage(customerQuery.getPage(),customerQuery.getRows());
+        List<Map<String,Object>> list = customerMapper.queryCustomerContributionByParams(customerQuery);
+        PageInfo<Map<String,Object>> pageInfo = new PageInfo<Map<String,Object>>(list);
+        result.put("total",pageInfo.getTotal());
+        result.put("rows",pageInfo.getList());
+
+        return  result;
     }
 
 }

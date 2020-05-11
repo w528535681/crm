@@ -11,6 +11,27 @@ public class CustomerQuery extends BaseQuery {
 
     private String myd;
 
+    // 1  0-1000   2 1000-3000  3  3000-5000  4 50000
+    private String type;
+
+    private String time;
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public String getTime() {
+        return time;
+    }
+
+    public void setTime(String time) {
+        this.time = time;
+    }
+
     public String getCusName() {
         return cusName;
     }

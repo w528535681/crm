@@ -57,4 +57,10 @@ public class CustomerController extends BaseController {
         model.addAttribute("customer",customerService.selectByPrimaryKey(cid));
         return "customer_order";
     }
+
+    @RequestMapping("queryCustomerContributionByParams")
+    @ResponseBody
+    public Map<String,Object> queryCustomerContributionByParams(CustomerQuery customerQuery){
+        return customerService.queryCustomerContributionByParams(customerQuery);
+    }
 }

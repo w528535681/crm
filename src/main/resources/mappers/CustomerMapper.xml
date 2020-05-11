@@ -343,4 +343,40 @@
         )
     </select>
 
+  <select id="queryCustomerContributionByParams" parameterType="com.shsxt.crm.query.CustomerQuery"  resultType="map">
+      SELECT
+      c. name,
+      sum(d.sum) AS total
+      FROM
+          t_customer c
+      LEFT JOIN t_customer_order o ON c.id = o.cus_id
+      LEFT JOIN t_order_details d ON d.order_id = o.id
+      <where>
+        c.is_valid = 1
+        AND o.state = 1
+        <if test="cusName != null and cusName != ''">
+            and c.name like concat ('%',#{cusName},'%')
+        </if>
+        <if test="null !=time">
+          and o.order_date &gt;#{time}
+        </if>
+      </where>
+      GROUP BY c.name
+    <if test="null !=type and type !=''">
+      <if test="type ==1 ">
+        HAVING   total &lt;=1000
+      </if>
+      <if test="type ==2">
+        HAVING total &gt;1000 and total &lt;=3000
+      </if>
+      <if test="type ==3">
+        HAVING total &gt;3000 and total &lt;=5000
+      </if>
+      <if test="type ==4">
+        HAVING  total &gt;5000
+      </if>
+    </if>
+    ORDER BY  total DESC
+  </select>
+
 </mapper>
