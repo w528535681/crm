@@ -4,6 +4,7 @@ import com.shsxt.base.BaseController;
 import com.shsxt.crm.model.ResultInfo;
 import com.shsxt.crm.query.CustomerServeQuery;
 import com.shsxt.crm.service.CustomerServeService;
+import com.shsxt.crm.utils.LoginUserUtil;
 import com.shsxt.crm.vo.CustomerServe;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Map;
 
 @Controller
@@ -27,6 +29,13 @@ public class CustomerServeController extends BaseController {
             return "customer_serve_create";
         }else if (type==2){
             return "customer_serve_assign";
+        }else if (type==3){
+            return "customer_serve_proce";
+        }else if (type==4){
+            return "customer_serve_feed_back";
+        }
+        else if (type==5){
+            return "customer_serve_archive";
         }else {
             return "";
         }
@@ -41,7 +50,10 @@ public class CustomerServeController extends BaseController {
 
     @RequestMapping("list")
     @ResponseBody
-    public Map<String,Object> queryCustomerServeByParams(CustomerServeQuery customerServeQuery){
-        return customerServeService.queryByParamsForDataGrid(customerServeQuery);
+    public Map<String,Object> queryCustomerServeByParams(Integer flag, HttpServletRequest request, CustomerServeQuery customerServeQuery){
+        if(null !=flag && flag==1){
+           customerServeQuery.setAssigner(LoginUserUtil.releaseUserIdFromCookie(request));
+       }
+       return customerServeService.queryByParamsForDataGrid(customerServeQuery);
     }
 }

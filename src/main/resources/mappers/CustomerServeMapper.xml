@@ -209,6 +209,9 @@
       <if test="null != type and type !=''">
         and serve_type = #{type}
       </if>
+      <if test="null !=assigner">
+        and assigner = #{assigner}
+      </if>
     </where>
   </select>
 </mapper>

@@ -56,6 +56,23 @@ public class CustomerServeService extends BaseService<CustomerServe,Integer> {
                customerServe.setUpdateDate(new Date());
                AssertUtil.isTrue(updateByPrimaryKeySelective(customerServe)<1,"服务分配失败!");
            }
+
+           if (customerServe.getState().equals(CustomerServeStatus.PROCED.getState())){
+               // 服务处理
+               AssertUtil.isTrue(StringUtils.isBlank(customerServe.getServiceProce()),"请指定处理内容!");
+               customerServe.setServiceProceTime(new Date());
+               customerServe.setUpdateDate(new Date());
+               AssertUtil.isTrue(updateByPrimaryKeySelective(customerServe)<1,"服务处理失败!");
+           }
+
+           if (customerServe.getState().equals(CustomerServeStatus.FEED_BACK.getState())){
+               //服务反馈
+               AssertUtil.isTrue(StringUtils.isBlank(customerServe.getServiceProceResult()),"请指定反馈内容!");
+               AssertUtil.isTrue(StringUtils.isBlank(customerServe.getMyd()),"请指定反馈满意度!");
+               customerServe.setUpdateDate(new Date());
+               customerServe.setState(CustomerServeStatus.ARCHIVED.getState());
+               AssertUtil.isTrue(updateByPrimaryKeySelective(customerServe)<1,"服务反馈失败!");
+           }
        }
     }
 }
